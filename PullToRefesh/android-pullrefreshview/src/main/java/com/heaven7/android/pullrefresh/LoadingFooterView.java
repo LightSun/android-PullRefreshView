@@ -14,7 +14,7 @@ import android.widget.TextView;
 public class LoadingFooterView extends RelativeLayout {
 
     public static final int STATE_NORMAL = 1;
-    public static final int STATE_THE_EMD = 2;
+    public static final int STATE_THE_END = 2;
     public static final int STATE_LOADING = 3;
     public static final int STATE_NET_ERROR = 4;
 
@@ -106,7 +106,7 @@ public class LoadingFooterView extends RelativeLayout {
                 mLoadingView.setVisibility(showView ? VISIBLE : GONE);
                 break;
 
-            case STATE_THE_EMD:
+            case STATE_THE_END:
                 if (mLoadingView != null) {
                     mLoadingView.setVisibility(GONE);
                 }
@@ -115,7 +115,7 @@ public class LoadingFooterView extends RelativeLayout {
                 }
                 if (mTheEndView == null) {
                     ViewStub viewStub = (ViewStub) findViewById(R.id.vs_end);
-                    mTheEndView = mVsPerformer.performViewStub(viewStub, STATE_THE_EMD);
+                    mTheEndView = mVsPerformer.performViewStub(viewStub, STATE_THE_END);
                 }
                 mTheEndView.setVisibility(showView ? VISIBLE : GONE);
                 break;
@@ -156,7 +156,7 @@ public class LoadingFooterView extends RelativeLayout {
                     mLoadingText.setText(R.string.list_footer_loading);
                     return mLoadingView;
 
-                case STATE_THE_EMD:
+                case STATE_THE_END:
                 case STATE_NET_ERROR:
                     return vs.inflate();
 
