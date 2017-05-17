@@ -61,6 +61,8 @@ public class PullToRefreshLayout extends FrameLayout {
         /**
          * called on click footer
          * @param layout the PullToRefreshLayout
+         * @param footer the footer view
+         * @param state the state of footer
          */
         public void onClickFooter(PullToRefreshLayout layout, LoadingFooterView footer, int state){
 
@@ -147,7 +149,10 @@ public class PullToRefreshLayout extends FrameLayout {
         getRecyclerView().setLayoutManager(lm);
     }
 
-    /** set adapter .it will auto add loading footer .*/
+    /** set adapter .it will auto add loading footer .
+     * @param <T> the data type
+     * @param adapter the adapter to bind
+     * */
     public <T extends ISelectable> void setAdapter(QuickRecycleViewAdapter<T> adapter){
         final RecyclerView.Adapter preAdapter = getRecyclerView().getAdapter();
         if(preAdapter != null && preAdapter instanceof QuickRecycleViewAdapter){
@@ -206,6 +211,7 @@ public class PullToRefreshLayout extends FrameLayout {
 
     /**
      * show the place holder view .  it can show loading, error or tips.
+     * @param flag the flag to show place holder.
      */
     public void showPlaceHolderView(int flag){
         mPlaceHolderView.setVisibility(View.VISIBLE);
