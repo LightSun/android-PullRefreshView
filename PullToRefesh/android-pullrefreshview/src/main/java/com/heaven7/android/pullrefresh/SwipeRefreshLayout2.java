@@ -10,7 +10,7 @@ import android.view.ViewConfiguration;
  * resolve: SwipeRefreshLayout and ViewPager scroll conflict.
  */
 public class SwipeRefreshLayout2 extends SwipeRefreshLayout {
-    private int mTouchSlop;
+    private final int mTouchSlop;
     private float mPrevX;
 
     public SwipeRefreshLayout2(Context context, AttributeSet attrs) {

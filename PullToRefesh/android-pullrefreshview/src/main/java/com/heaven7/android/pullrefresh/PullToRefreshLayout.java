@@ -104,6 +104,11 @@ public class PullToRefreshLayout extends FrameLayout {
         init(context, attrs);
     }
 
+    /**
+     * init the refresh layout
+     * @param context the context
+     * @param attrs the attrs
+     */
     private void init(Context context, AttributeSet attrs) {
         LayoutInflater.from(context).inflate(R.layout.widget_refresh_view, this);
         mRefreshlayout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
