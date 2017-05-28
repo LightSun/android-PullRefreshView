@@ -37,7 +37,7 @@ publish {
     userOrg = 'lightsun'
     groupId = 'com.heaven7.android.pullrefresh'
     artifactId = 'android-pullrefreshview'
-    publishVersion = '1.0'
+    publishVersion = '1.0.1'
     desc = 'a pull to fresh lib of android'
     website = 'https://github.com/LightSun/android-PullRefreshView'
 }
