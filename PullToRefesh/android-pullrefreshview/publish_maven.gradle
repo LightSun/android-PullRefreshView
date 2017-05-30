@@ -1,0 +1,115 @@
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+def version_name = android.defaultConfig.versionName;
+//version = publishVersion
+//group = "com.heaven7.android.pull2refresh"
+
+//def siteUrl = 'https://github.com/LightSun/android-PullRefreshView'
+//def gitUrl = 'https://github.com/LightSun/android-PullRefreshView.git'
+//project.rootProject
+Properties prop = new Properties()
+prop.load(project.file('local.properties').newDataInputStream())
+prop.load(project.file('project.properties').newDataInputStream())
+
+version = version_name
+group =  prop.getProperty("project.groupId");
+
+def giturl = prop.getProperty("project.siteUrl");
+def project_name =  prop.getProperty("project.name");
+def project_artifactId =  prop.getProperty("project.artifactId");
+def project_desc = prop.getProperty("project.desc");
+def prokect_package = prop.getProperty("project.packaging");
+def project_doc_name = prop.getProperty("javadoc.name");
+
+def listence = prop.getProperty("project.lisence")
+def lisence_url = prop.getProperty("project.lisence.url")
+
+def developer_id = prop.getProperty("developer.id");
+def developer_name = prop.getProperty("developer.name");
+def developer_email = prop.getProperty("developer.email");
+
+bintray {
+    user = prop.getProperty("bintray.user")
+    key = prop.getProperty("bintray.apikey")
+
+    configurations = ['archives'] //When uploading configuration files
+    pkg {
+        repo = 'maven'
+        name = project_name
+        desc = project_desc
+        websiteUrl = giturl
+        issueTrackerUrl = giturl + '/issues'
+        vcsUrl = giturl + ".git"
+        licenses = [listence]
+        labels = ['android']
+        publicDownloadNumbers = true
+    }
+}
+
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                packaging prokect_package
+                name project_name
+                url giturl
+                licenses {
+                    license {
+                        name  listence
+                        url lisence_url
+                    }
+                }
+                developers {
+                    developer {
+                        id developer_id
+                        name developer_name
+                        email developer_email
+                    }
+                }
+                scm {
+                    connection  giturl + ".git"
+                    developerConnection  giturl + ".git"
+                    url giturl
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+task findConventions << {
+    println project.getConvention()
+}
+javadoc {
+    options{
+        encoding "UTF-8"
+        charSet 'UTF-8'
+        author true
+        version version_name
+        links "http://docs.oracle.com/javase/7/docs/api"
+        title project_doc_name
+    }
+}
