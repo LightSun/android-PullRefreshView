@@ -14,6 +14,9 @@ import com.heaven7.android.pullrefresh.PullToRefreshLayout;
 import com.heaven7.core.util.Logger;
 import com.heaven7.core.util.MainWorker;
 import com.heaven7.core.util.ViewHelper;
+import com.heaven7.java.study.processor.PrintMe;
+import com.heaven7.java.study.processor.Proxy_heaven7;
+import com.heaven7.java.study.processor.ShouldProxy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +28,8 @@ import pulltorefresh.android.heaven7.com.pulltorefesh.R;
 /**
  * Created by heaven7 on 2017/5/17 0017.
  */
-
+@Proxy_heaven7
+@PrintMe
 public class PullToRefreshTestActivity extends BaseActivity{
 
     private static final String TAG = "PullToRefreshTestActivity";
@@ -83,6 +87,7 @@ public class PullToRefreshTestActivity extends BaseActivity{
         return list;
     }
 
+    @ShouldProxy
     private void loadMoreData(PullToRefreshLayout layout){
         layout.getFooterView().setState(LoadingFooterView.STATE_LOADING);
         MainWorker.postDelay(2000, new Runnable() {
@@ -96,6 +101,7 @@ public class PullToRefreshTestActivity extends BaseActivity{
         });
     }
 
+    @ShouldProxy
     private void loadData() {
         MainWorker.postDelay(2000, new Runnable() {
             @Override
