@@ -21,7 +21,7 @@ import com.heaven7.adapter.QuickRecycleViewAdapter;
 
 
 /**
- * the pull to refresh view.
+ * the pull to refresh layout.
  * Created by heaven7 on 2017/5/17 0017.
  */
 

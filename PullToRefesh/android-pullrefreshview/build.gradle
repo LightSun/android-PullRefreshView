@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion 11
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode 101
+        versionName "1.0.1"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -64,7 +64,7 @@ ext {
     gitUrl = 'https://github.com/LightSun/android-PullRefreshView.git'
     githubRepository= 'lightsun/android-PullRefreshView'
 
-    libraryVersion = '1.0'
+    libraryVersion = '1.0.1'
 
     developerId = 'heaven7'
     developerName = 'heaven7'
@@ -77,4 +77,4 @@ ext {
 
 apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/installv1.gradle'
 apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/bintrayv1.gradle'
-
+//gradlew clean build install bintrayUpload
