@@ -9,7 +9,7 @@ android {
         minSdkVersion 11
         targetSdkVersion 25
         versionCode 101
-        versionName "1.0.1"
+        versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -51,20 +51,20 @@ dependencies {
 
 ext {
     bintrayRepo = 'maven'
-    bintrayName = 'android-pullrefreshview'   // Has to be same as your library module name
+    bintrayName = 'android-pullrefreshview2'   // Has to be same as your library module name
 
-    publishedGroupId = 'com.heaven7.android.pullrefresh'
-    libraryName = 'android-pullrefreshview'
-    artifact = 'android-pullrefreshview'     // Has to be same as your library module name
+    publishedGroupId = 'com.heaven7.android.pullrefresh2'
+    libraryName = 'android-pullrefreshview2'
+    artifact = 'android-pullrefreshview2'     // Has to be same as your library module name
 
     libraryDescription = 'Android Library of pull to refresh view'
 
     // Your github repo link
     siteUrl = 'https://github.com/LightSun/android-PullRefreshView'
     gitUrl = 'https://github.com/LightSun/android-PullRefreshView.git'
-    githubRepository= 'lightsun/android-PullRefreshView'
+    githubRepository= 'lightsun/android-PullRefreshView2'
 
-    libraryVersion = '1.0.1'
+    libraryVersion = '1.0'
 
     developerId = 'heaven7'
     developerName = 'heaven7'
