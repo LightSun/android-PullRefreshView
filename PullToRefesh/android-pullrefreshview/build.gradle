@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
+//apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 25
@@ -33,7 +33,7 @@ dependencies {
     compile 'com.heaven7.core.adapter:adapter:1.8.8'
 }
 
-publish {
+/*publish {
     userOrg = 'lightsun'
     groupId = 'com.heaven7.android.pullrefresh'
     artifactId = 'android-pullrefreshview'
@@ -42,6 +42,36 @@ publish {
     desc = 'a pull to fresh lib of android'
     website = 'https://github.com/LightSun/android-PullRefreshView'
     licences = ['Apache-2.0']
-}
+}*/
 
 //apply from: "publish_maven.gradle"
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'android-pullrefreshview'   // Has to be same as your library module name
+
+    publishedGroupId = 'com.heaven7.android.pullrefresh'
+    libraryName = 'android-pullrefreshview'
+    artifact = 'android-pullrefreshview'     // Has to be same as your library module name
+
+    libraryDescription = 'Android Library of pull to refresh view'
+
+    // Your github repo link
+    siteUrl = 'https://github.com/LightSun/android-PullRefreshView'
+    gitUrl = 'https://github.com/LightSun/android-PullRefreshView.git'
+    githubRepository= 'lightsun/android-PullRefreshView'
+
+    libraryVersion = '1.0'
+
+    developerId = 'heaven7'
+    developerName = 'heaven7'
+    developerEmail = 'donshine723@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/bintrayv1.gradle'
+
