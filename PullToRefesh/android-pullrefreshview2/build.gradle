@@ -62,7 +62,7 @@ ext {
     // Your github repo link
     siteUrl = 'https://github.com/LightSun/android-PullRefreshView'
     gitUrl = 'https://github.com/LightSun/android-PullRefreshView.git'
-    githubRepository= 'lightsun/android-PullRefreshView2'
+    githubRepository= 'LightSun/android-PullRefreshView'
 
     libraryVersion = '1.0'
 
