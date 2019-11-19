@@ -2,7 +2,6 @@
 a android  lib of pull to refresh.
 
 # Gradle config
-in jcenter
 
 ```java
 //jitpack
