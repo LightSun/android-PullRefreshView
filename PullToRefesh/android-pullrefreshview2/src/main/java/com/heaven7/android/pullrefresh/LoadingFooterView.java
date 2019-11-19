@@ -13,10 +13,10 @@ import android.widget.TextView;
  */
 public class LoadingFooterView extends RelativeLayout {
 
-    public static final int STATE_NORMAL = 1;
-    public static final int STATE_THE_END = 2;
-    public static final int STATE_LOADING = 3;
-    public static final int STATE_NET_ERROR = 4;
+    public static final int STATE_NORMAL = FooterDelegate.STATE_NORMAL;
+    public static final int STATE_THE_END = FooterDelegate.STATE_THE_END;
+    public static final int STATE_LOADING = FooterDelegate.STATE_LOADING;
+    public static final int STATE_NET_ERROR = FooterDelegate.STATE_NET_ERROR;
 
     private int mState = STATE_NORMAL;
 

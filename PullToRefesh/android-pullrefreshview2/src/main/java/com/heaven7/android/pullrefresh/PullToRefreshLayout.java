@@ -16,8 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.heaven7.adapter.AbstractLoadMoreScrollListener;
-import com.heaven7.adapter.ISelectable;
-import com.heaven7.adapter.QuickRecycleViewAdapter;
+import com.heaven7.adapter.AdapterManager;
 
 
 /**
@@ -33,10 +32,11 @@ public class PullToRefreshLayout extends FrameLayout {
     private LinearLayout mPlaceHolderView;
 
     private LoadMoreScrollListenerImpl mLoadMoreListenerImpl;
-    private LoadingFooterView mFooterView;
 
     private Callback mCallback;
     private PlaceHolderViewPerformer mHolderPerformer;
+
+    private FooterDelegate mFooterDelegate = new DefaultFooterDelegate();
 
     /**
      * the callback of {@linkplain PullToRefreshLayout}
@@ -64,7 +64,19 @@ public class PullToRefreshLayout extends FrameLayout {
          * @param footer the footer view
          * @param state the state of footer
          */
+        @Deprecated
         public void onClickFooter(PullToRefreshLayout layout, LoadingFooterView footer, int state){
+            onClickFooter(layout, (View)footer, state);
+        }
+
+        /**
+         * called on click footer
+         * @param layout the layout
+         * @param footer the footer view
+         * @param state the state. see {@linkplain FooterDelegate#STATE_LOADING} and etc.
+         * @since 1.1.0
+         */
+        public void onClickFooter(PullToRefreshLayout layout, View footer, int state){
 
         }
     }
@@ -125,11 +137,24 @@ public class PullToRefreshLayout extends FrameLayout {
             }
         });
         mRv.addOnScrollListener(mLoadMoreListenerImpl);
-        //footer
-        mFooterView = new LoadingFooterView(getContext());
-        mFooterView.setOnClickListener(new OnClickFooterListenerImpl());
+    }
+    /**
+     * set the footer delegate
+     * @param delegate the footer delegate
+     * @since 1.1.0
+     */
+    public void setFooterDelegate(FooterDelegate delegate){
+        mFooterDelegate = delegate;
     }
 
+    /**
+     * get the footer delegate
+     * @return the footer delegate
+     * @since 1.1.0
+     */
+    public FooterDelegate getFooterDelegate(){
+        return mFooterDelegate;
+    }
     /**
      * set the place holder view performer
      * @param performer the performer.
@@ -143,7 +168,11 @@ public class PullToRefreshLayout extends FrameLayout {
      * @param performer the target state performer.
      */
     public void setStatePerformer(LoadingFooterView.StatePerformer performer){
-        mFooterView.setStatePerformer(performer);
+        mFooterDelegate.prepareFooterView(getContext());
+        View view = mFooterDelegate.getView();
+        if(view instanceof LoadingFooterView){
+            ((LoadingFooterView)view).setStatePerformer(performer);
+        }
     }
 
     /**
@@ -155,15 +184,20 @@ public class PullToRefreshLayout extends FrameLayout {
     }
 
     /** set adapter .it will auto add loading footer .
-     * @param <T> the data type
      * @param adapter the adapter to bind
      * */
-    public <T extends ISelectable> void setAdapter(QuickRecycleViewAdapter<T> adapter){
+    public void setAdapter(RecyclerView.Adapter adapter){
+        mFooterDelegate.prepareFooterView(getContext());
+        View view = mFooterDelegate.getView();
+        view.setOnClickListener(new OnClickFooterListenerImpl());
+
         final RecyclerView.Adapter preAdapter = getRecyclerView().getAdapter();
-        if(preAdapter != null && preAdapter instanceof QuickRecycleViewAdapter){
-            ((QuickRecycleViewAdapter) preAdapter).removeFooterView(mFooterView);
+        if(preAdapter instanceof AdapterManager.IHeaderFooterManager){
+            ((AdapterManager.IHeaderFooterManager) preAdapter).removeFooterView(view);
         }
-        adapter.addFooterView(mFooterView);
+        if(adapter instanceof AdapterManager.IHeaderFooterManager){
+            ((AdapterManager.IHeaderFooterManager) adapter).addFooterView(view);
+        }
         getRecyclerView().setAdapter(adapter);
     }
 
@@ -181,7 +215,9 @@ public class PullToRefreshLayout extends FrameLayout {
      * @return the footer view.
      */
     public LoadingFooterView getFooterView(){
-        return mFooterView;
+        mFooterDelegate.prepareFooterView(getContext());
+        View view = mFooterDelegate.getView();
+        return view instanceof LoadingFooterView ? (LoadingFooterView) view : null;
     }
 
     /**
@@ -234,8 +270,12 @@ public class PullToRefreshLayout extends FrameLayout {
     private class OnClickFooterListenerImpl implements OnClickListener{
         @Override
         public void onClick(View v) {
-            LoadingFooterView view = (LoadingFooterView) v;
-            mCallback.onClickFooter(PullToRefreshLayout.this, view, view.getState());
+            if(v instanceof LoadingFooterView){
+                LoadingFooterView view = (LoadingFooterView) v;
+                mCallback.onClickFooter(PullToRefreshLayout.this, view, view.getState());
+            }else {
+                mCallback.onClickFooter(PullToRefreshLayout.this, v, mFooterDelegate.getState());
+            }
         }
     }
 
