@@ -2,6 +2,7 @@ package com.heaven7.android.pullrefresh;
 
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * the default footer delegate
@@ -13,9 +14,9 @@ import android.view.View;
     private LoadingFooterView mFooterView;
 
     @Override
-    public void prepareFooterView(Context context){
+    public void prepareFooterView(ViewGroup parent){
         if(mFooterView == null){
-            mFooterView = new LoadingFooterView(context);
+            mFooterView = new LoadingFooterView(parent.getContext());
         }
        // mFooterView.setOnClickListener(new PullToRefreshLayout.OnClickFooterListenerImpl());
     }

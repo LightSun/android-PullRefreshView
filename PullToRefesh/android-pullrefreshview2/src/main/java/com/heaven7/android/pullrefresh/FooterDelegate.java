@@ -2,6 +2,7 @@ package com.heaven7.android.pullrefresh;
 
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * the footer delegate .
@@ -17,9 +18,9 @@ public interface FooterDelegate {
 
     /**
      * called on prepare footer view
-     * @param context the context to create footer view
+     * @param parent the parent View
      */
-    void prepareFooterView(Context context);
+    void prepareFooterView(ViewGroup parent);
 
     /**
      * the footer view.

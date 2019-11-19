@@ -168,7 +168,7 @@ public class PullToRefreshLayout extends FrameLayout {
      * @param performer the target state performer.
      */
     public void setStatePerformer(LoadingFooterView.StatePerformer performer){
-        mFooterDelegate.prepareFooterView(getContext());
+        mFooterDelegate.prepareFooterView(getRecyclerView());
         View view = mFooterDelegate.getView();
         if(view instanceof LoadingFooterView){
             ((LoadingFooterView)view).setStatePerformer(performer);
@@ -187,7 +187,7 @@ public class PullToRefreshLayout extends FrameLayout {
      * @param adapter the adapter to bind
      * */
     public void setAdapter(RecyclerView.Adapter adapter){
-        mFooterDelegate.prepareFooterView(getContext());
+        mFooterDelegate.prepareFooterView(getRecyclerView());
         View view = mFooterDelegate.getView();
         view.setOnClickListener(new OnClickFooterListenerImpl());
 
@@ -215,7 +215,7 @@ public class PullToRefreshLayout extends FrameLayout {
      * @return the footer view.
      */
     public LoadingFooterView getFooterView(){
-        mFooterDelegate.prepareFooterView(getContext());
+        mFooterDelegate.prepareFooterView(getRecyclerView());
         View view = mFooterDelegate.getView();
         return view instanceof LoadingFooterView ? (LoadingFooterView) view : null;
     }
