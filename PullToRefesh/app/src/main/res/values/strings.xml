@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">PullToRefesh</string>
+
+    <string name="empty_data">暂无相关信息!</string>
+    <string name="net_error">网络开小差啦，请检查网络设置！</string>
+    <string name="reload">重新加载</string>
+    <string name="submit">提交</string>
 </resources>

@@ -2,6 +2,7 @@ package pulltorefresh.android.heaven7.com.pulltorefesh;
 
 import java.util.List;
 
+import pulltorefresh.android.heaven7.com.pulltorefesh.sample.PullToRefreshTest2Activity;
 import pulltorefresh.android.heaven7.com.pulltorefesh.sample.PullToRefreshTestActivity;
 
 /**
@@ -14,6 +15,7 @@ public class TestMainActivity extends AbsMainActivity {
     @Override
     protected void addDemos(List<ActivityInfo> list) {
         list.add(new ActivityInfo(PullToRefreshTestActivity.class, "Test pull refresh"));
+        list.add(new ActivityInfo(PullToRefreshTest2Activity.class, "Test pull refresh 2"));
     }
 }
 

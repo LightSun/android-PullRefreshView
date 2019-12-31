@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -28,8 +29,10 @@ public class PullToRefreshLayout extends FrameLayout {
 
     private SwipeRefreshLayout mRefreshlayout;
     private RecyclerView mRv;
-    /** a place holder view that can show loading, error,tips */
+    /** a place holder view that can show loading, error,tips . which is overlap SwipeRefreshLayout. */
     private LinearLayout mPlaceHolderView;
+    /** a view which can overlap content(RecyclerView). */
+    private FrameLayout mContentOverlapView;
 
     private LoadMoreScrollListenerImpl mLoadMoreListenerImpl;
 
@@ -37,6 +40,8 @@ public class PullToRefreshLayout extends FrameLayout {
     private PlaceHolderViewPerformer mHolderPerformer;
 
     private FooterDelegate mFooterDelegate = new DefaultFooterDelegate();
+    private StatePerformDelegate mStatePerformer;
+    private int mState = -1;
 
     /**
      * the callback of {@linkplain PullToRefreshLayout}
@@ -82,8 +87,10 @@ public class PullToRefreshLayout extends FrameLayout {
     }
 
     /**
+     * <p>Use {@linkplain StatePerformDelegate} with {@linkplain PullToRefreshLayout#setState(int)} instead.</p>
      * the place holder performer.
      */
+    @Deprecated
     public interface PlaceHolderViewPerformer{
         /**
          * called on perform the place holder view/
@@ -91,7 +98,21 @@ public class PullToRefreshLayout extends FrameLayout {
          * @param placeHolderView the place holder view.
          * @param flag the code which comes from {@linkplain PullToRefreshLayout#showPlaceHolderView(int)}
          */
-        void performPlaceHolderView(PullToRefreshLayout layout, LinearLayout  placeHolderView, int flag);
+        void performPlaceHolderView(PullToRefreshLayout layout, LinearLayout placeHolderView, int flag);
+    }
+
+    /**
+     * the state perform delegate
+     * @since 1.1.2
+     */
+    public interface StatePerformDelegate{
+        /**
+         * called on perform state
+         * @param layout the layout
+         * @param preState the previous state.
+         * @param state the current state.
+         */
+        void performState(PullToRefreshLayout layout, int preState,int state);
     }
 
 
@@ -115,18 +136,20 @@ public class PullToRefreshLayout extends FrameLayout {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context, attrs);
     }
-
     /**
      * init the refresh layout
      * @param context the context
      * @param attrs the attrs
      */
     private void init(Context context, AttributeSet attrs) {
-        LayoutInflater.from(context).inflate(R.layout.widget_refresh_view, this);
-        mRefreshlayout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
-        mRv = (RecyclerView) findViewById(R.id.rv);
-        mPlaceHolderView = (LinearLayout) findViewById(R.id.vg_loading);
+        LayoutInflater.from(context).inflate(R.layout.lib_ptr_widget_refresh_view, this);
+        mRefreshlayout = findViewById(R.id.refresh_layout);
+        mRv = findViewById(R.id.rv);
+        mPlaceHolderView = findViewById(R.id.vg_out);
+        mContentOverlapView = findViewById(R.id.vg_in);
 
+        mContentOverlapView.setVisibility(GONE);
+        mPlaceHolderView.setVisibility(GONE);
         //mRefreshlayout.setColorSchemeColors(context.getResources().getColor(R.color.bg_color_036ddd));
         mRv.setLayoutManager(new LinearLayoutManager(context));
         mLoadMoreListenerImpl = new LoadMoreScrollListenerImpl();
@@ -137,6 +160,15 @@ public class PullToRefreshLayout extends FrameLayout {
             }
         });
         mRv.addOnScrollListener(mLoadMoreListenerImpl);
+    }
+
+    /**
+     * set state perform delegate
+     * @param delegate the delegate
+     * @since 1.1.2
+     */
+    public void setStatePerformDelegate(StatePerformDelegate delegate){
+        this.mStatePerformer = delegate;
     }
     /**
      * set the footer delegate
@@ -159,14 +191,17 @@ public class PullToRefreshLayout extends FrameLayout {
      * set the place holder view performer
      * @param performer the performer.
      */
+    @Deprecated
     public void setPlaceHolderViewPerformer(PlaceHolderViewPerformer performer) {
         this.mHolderPerformer = performer;
     }
 
     /**
-     * set state performer. {@linkplain LoadingFooterView.StatePerformer}
+     * <p>Use {@linkplain #setStatePerformDelegate(StatePerformDelegate)} instead. </p>
+     * set state performer
      * @param performer the target state performer.
      */
+    @Deprecated
     public void setStatePerformer(LoadingFooterView.StatePerformer performer){
         mFooterDelegate.prepareFooterView(getRecyclerView());
         View view = mFooterDelegate.getView();
@@ -214,6 +249,7 @@ public class PullToRefreshLayout extends FrameLayout {
      * get the footer view
      * @return the footer view.
      */
+    @Deprecated
     public LoadingFooterView getFooterView(){
         mFooterDelegate.prepareFooterView(getRecyclerView());
         View view = mFooterDelegate.getView();
@@ -235,16 +271,63 @@ public class PullToRefreshLayout extends FrameLayout {
         return mRefreshlayout;
     }
     /**
+     * <p>Use {@linkplain #getWholeOverlapView()} instead. </p>
      * get the place holder view . you can use it show loading, error or tips.
      * @return the place holder view.
      */
+    @Deprecated
     public LinearLayout getPlaceHolderView(){
         return mPlaceHolderView;
     }
+    /**
+     * get the whole overlap view . you can use it show loading, error or tips.
+     * @return the whole overlap view.
+     * @since 1.1.2
+     */
+    public ViewGroup getWholeOverlapView(){
+        return mPlaceHolderView;
+    }
+    /**
+     * get the content overlap view . you can use it show loading, error or tips.
+     * @return the content overlap view.
+     * @since 1.1.2
+     */
+    public ViewGroup getContentOverlapView(){
+        return mContentOverlapView;
+    }
 
+    /**
+     * set any state as you want.
+     * @param state the state.
+     * @since 1.1.2
+     */
+    public void setState(int state){
+        setState(state, false);
+    }
+    /**
+     * set any state as you want.
+     * @param state the state.
+     * @param force true to force refresh state
+     * @since 1.1.2
+     */
+    public void setState(int state, boolean force){
+        if(force || this.mState != state){
+            int old = this.mState;
+            this.mState = state;
+            mStatePerformer.performState(this, old, state);
+        }
+    }
+    /**
+     * get current state. if you not call {@linkplain #setState(int)}. default is -1.
+     * @return the state
+     */
+    public int getState(){
+        return mState;
+    }
     /**
      * show the content of {@linkplain RecyclerView}/{@linkplain SwipeRefreshLayout}
      */
+    //@Deprecated
     public void showContentView(){
         mPlaceHolderView.setVisibility(View.GONE);
         mRefreshlayout.setVisibility(View.VISIBLE);
@@ -254,6 +337,7 @@ public class PullToRefreshLayout extends FrameLayout {
      * show the place holder view .  it can show loading, error or tips.
      * @param flag the flag to show place holder.
      */
+    //@Deprecated
     public void showPlaceHolderView(int flag){
         mPlaceHolderView.setVisibility(View.VISIBLE);
         mRefreshlayout.setVisibility(View.GONE);

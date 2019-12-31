@@ -14,11 +14,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             />
+        <FrameLayout
+            android:id="@+id/vg_in"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+        </FrameLayout>
     </com.heaven7.android.pullrefresh.SwipeRefreshLayout2>
 
-
     <LinearLayout
-        android:id="@+id/vg_loading"
+        android:id="@+id/vg_out"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"

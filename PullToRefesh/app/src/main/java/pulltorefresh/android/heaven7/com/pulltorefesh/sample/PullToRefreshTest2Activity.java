@@ -29,14 +29,18 @@ import pulltorefresh.android.heaven7.com.pulltorefesh.R;
  */
 @Proxy_heaven7
 @PrintMe
-public class PullToRefreshTestActivity extends BaseActivity{
+public class PullToRefreshTest2Activity extends BaseActivity{
 
     private static final String TAG = "PullToRefreshTestActivity";
+    private static final int STATE_ERROR = 1;
+    private static final int STATE_EMPTY = 2;
 
     @BindView(R.id.pull_refresh)
     PullToRefreshLayout mPullView;
 
     private QuickRecycleViewAdapter<TestBean> mAdapter;
+    private View mEmptyView;
+    private View mErrorView;
 
     @Override
     public int getLayoutId() {
@@ -45,11 +49,25 @@ public class PullToRefreshTestActivity extends BaseActivity{
 
     @Override
     public void onInitialize(Context context, @Nullable Bundle savedInstanceState) {
+        mEmptyView = getLayoutInflater().inflate(R.layout.include_empty_data, mPullView.getContentOverlapView(), true);
+        mErrorView = getLayoutInflater().inflate(R.layout.include_net_error, mPullView.getWholeOverlapView(), true);
+        mErrorView.findViewById(R.id.tv_reload).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPullView.getWholeOverlapView().setVisibility(View.GONE);
+                mPullView.getSwipeRefreshLayout().setRefreshing(true);
+                loadData();
+            }
+        });
+
         mPullView.setLayoutManager(new LinearLayoutManager(context));
         mPullView.setCallback(new PullToRefreshLayout.Callback() {
             @Override
             public void onRefresh(PullToRefreshLayout layout) {
                 Logger.i(TAG,"onRefresh","");
+                if(layout.getState() == STATE_EMPTY){
+                    mPullView.getContentOverlapView().setVisibility(View.GONE);
+                }
                 loadData();
             }
 
@@ -71,6 +89,22 @@ public class PullToRefreshTestActivity extends BaseActivity{
             protected void onBindData(Context context, int position, TestBean item, int itemLayoutId, ViewHelper2 helper) {
                 helper.setText(R.id.tv1, item.text1)
                      .setText(R.id.tv2, item.text2);
+            }
+        });
+        mPullView.setStatePerformDelegate(new PullToRefreshLayout.StatePerformDelegate() {
+            @Override
+            public void performState(PullToRefreshLayout layout,int preState,int state) {
+                 layout.setLoadingComplete();
+                 switch (state){
+                     case STATE_EMPTY:
+                         layout.getWholeOverlapView().setVisibility(View.GONE);
+                         layout.getContentOverlapView().setVisibility(View.VISIBLE);
+                         break;
+                     case STATE_ERROR:
+                         layout.getWholeOverlapView().setVisibility(View.VISIBLE);
+                         layout.getContentOverlapView().setVisibility(View.GONE);
+                         break;
+                 }
             }
         });
     }
@@ -102,15 +136,41 @@ public class PullToRefreshTestActivity extends BaseActivity{
 
     @ShouldProxy
     private void loadData() {
-        MainWorker.postDelay(2000, new Runnable() {
-            @Override
-            public void run() {
-                Random r = new Random();
-                mAdapter.getAdapterManager().replaceAllItems(getTestList(r.nextInt(10) + 20));
-                mPullView.setLoadingComplete();
-                getToaster().show("refresh done");
-            }
-        });
+        //mock error. empty. normal
+        int result = new Random().nextInt(8) % 3;
+        switch (result){
+            case 0: { // normal
+                MainWorker.postDelay(2000, new Runnable() {
+                    @Override
+                    public void run() {
+                        Random r = new Random();
+                        mAdapter.getAdapterManager().replaceAllItems(getTestList(r.nextInt(10) + 20));
+                        mPullView.setLoadingComplete();
+                        getToaster().show("refresh done");
+                    }
+                });
+            }break;
+
+            case 1: {
+                MainWorker.postDelay(1000, new Runnable() {
+                    @Override
+                    public void run() {
+                        mPullView.setState(STATE_EMPTY);
+                        getToaster().show("Empty");
+                    }
+                });
+            }break;
+
+            case 2: {
+                MainWorker.postDelay(1000,new Runnable() {
+                    @Override
+                    public void run() {
+                        mPullView.setState(STATE_ERROR);
+                        getToaster().show("error");
+                    }
+                });
+            }break;
+        }
     }
 
     static class TestBean extends BaseSelector{

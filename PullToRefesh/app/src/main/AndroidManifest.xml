@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".sample.PullToRefreshTestActivity"/>
+        <activity android:name=".sample.PullToRefreshTest2Activity"/>
     </application>
 
 </manifest>

@@ -56,7 +56,7 @@ public class LoadingFooterView extends RelativeLayout {
     }
 
     public void init(Context context) {
-        inflate(context, R.layout.footer_list, this);
+        inflate(context, R.layout.lib_ptr_footer_list, this);
         setState(STATE_NORMAL, true);
     }
 
@@ -153,7 +153,7 @@ public class LoadingFooterView extends RelativeLayout {
                     mLoadingProgress = (ProgressBar) mLoadingView.findViewById(R.id.loading_progress);
                     mLoadingText = (TextView) mLoadingView.findViewById(R.id.loading_text);
                     mLoadingProgress.setVisibility(View.VISIBLE);
-                    mLoadingText.setText(R.string.list_footer_loading);
+                    mLoadingText.setText(R.string.lib_ptr_list_footer_loading);
                     return mLoadingView;
 
                 case STATE_THE_END:

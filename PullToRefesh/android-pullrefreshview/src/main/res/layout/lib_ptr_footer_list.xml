@@ -10,18 +10,18 @@
         android:id="@+id/vs_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout="@layout/footer_loading" />
+        android:layout="@layout/lib_ptr_footer_loading" />
 
     <ViewStub
         android:id="@+id/vs_end"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout="@layout/footer_end" />
+        android:layout="@layout/lib_ptr_footer_end" />
 
     <ViewStub
         android:id="@+id/vs_net_error"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout="@layout/footer_network_error" />
+        android:layout="@layout/lib_ptr_footer_network_error" />
 
 </LinearLayout>
