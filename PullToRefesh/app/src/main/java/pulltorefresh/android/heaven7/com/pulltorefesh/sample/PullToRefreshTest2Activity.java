@@ -94,13 +94,14 @@ public class PullToRefreshTest2Activity extends BaseActivity{
         mPullView.setStatePerformDelegate(new PullToRefreshLayout.StatePerformDelegate() {
             @Override
             public void performState(PullToRefreshLayout layout,int preState,int state) {
-                 layout.setLoadingComplete();
                  switch (state){
                      case STATE_EMPTY:
+                         layout.getSwipeRefreshLayout().setRefreshing(false);
                          layout.getWholeOverlapView().setVisibility(View.GONE);
                          layout.getContentOverlapView().setVisibility(View.VISIBLE);
                          break;
                      case STATE_ERROR:
+                         layout.getSwipeRefreshLayout().setRefreshing(false);
                          layout.getWholeOverlapView().setVisibility(View.VISIBLE);
                          layout.getContentOverlapView().setVisibility(View.GONE);
                          break;
@@ -137,7 +138,7 @@ public class PullToRefreshTest2Activity extends BaseActivity{
     @ShouldProxy
     private void loadData() {
         //mock error. empty. normal
-        int result = new Random().nextInt(8) % 3;
+        int result = (new Random().nextInt(8) + 1) % 3;
         switch (result){
             case 0: { // normal
                 MainWorker.postDelay(2000, new Runnable() {
@@ -170,6 +171,9 @@ public class PullToRefreshTest2Activity extends BaseActivity{
                     }
                 });
             }break;
+
+            default:
+                System.err.println("wrong number = " + result);
         }
     }
 
