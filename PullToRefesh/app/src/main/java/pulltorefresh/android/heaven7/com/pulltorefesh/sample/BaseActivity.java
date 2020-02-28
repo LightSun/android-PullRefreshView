@@ -2,8 +2,9 @@ package pulltorefresh.android.heaven7.com.pulltorefesh.sample;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.heaven7.core.util.Toaster;
 

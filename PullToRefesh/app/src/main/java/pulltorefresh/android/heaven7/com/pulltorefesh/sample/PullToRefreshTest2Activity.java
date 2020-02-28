@@ -3,8 +3,9 @@ package pulltorefresh.android.heaven7.com.pulltorefesh.sample;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.heaven7.adapter.BaseSelector;
 import com.heaven7.adapter.QuickRecycleViewAdapter;

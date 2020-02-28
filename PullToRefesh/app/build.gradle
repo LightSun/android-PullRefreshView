@@ -29,9 +29,9 @@ dependencies {
     //  compile 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor "com.jakewharton:butterknife-compiler:8.4.0"
-    //compile 'com.heaven7.android.pullrefresh2:android-pullrefreshview2:1.0'
+
     implementation project(':android-pullrefreshview')
-    //compile 'com.heaven7.android.pullrefresh:android-pullrefreshview:1.0.1'
+
     annotationProcessor files('libs/TestProcessor.jar')
     implementation files('libs/TestProcessor.jar')
 
