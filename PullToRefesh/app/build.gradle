@@ -1,12 +1,13 @@
 apply plugin: 'com.android.application'
 //apply plugin: 'com.neenbedankt.android-apt'
+apply from: '../androidx_compat.gradle'
 
 android {
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
     defaultConfig {
         applicationId "pulltorefresh.android.heaven7.com.pulltorefesh"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -25,13 +26,7 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation "com.android.support:recyclerview-v7:28.0.0"
     //  compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    testImplementation 'junit:junit:4.12'
     implementation 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor "com.jakewharton:butterknife-compiler:8.4.0"
     //compile 'com.heaven7.android.pullrefresh2:android-pullrefreshview2:1.0'
@@ -40,8 +35,8 @@ dependencies {
     annotationProcessor files('libs/TestProcessor.jar')
     implementation files('libs/TestProcessor.jar')
 
-    implementation('com.github.LightSun:util-v1:1.1.4') {
+    implementation('com.github.LightSun:util-v1:1.1.7-beta-x') {
         exclude group: 'com.android.support'
     }
-    implementation 'com.github.LightSun:SuperAdapter:2.0.6'
+    implementation 'com.github.LightSun:SuperAdapter:2.0.9-x'
 }
