@@ -328,7 +328,6 @@ public class PullToRefreshLayout extends FrameLayout {
     /**
      * show the content of {@linkplain RecyclerView}/{@linkplain SwipeRefreshLayout}
      */
-    //@Deprecated
     public void showContentView(){
         mPlaceHolderView.setVisibility(View.GONE);
         mRefreshlayout.setVisibility(View.VISIBLE);
@@ -338,11 +337,12 @@ public class PullToRefreshLayout extends FrameLayout {
      * show the place holder view .  it can show loading, error or tips.
      * @param flag the flag to show place holder.
      */
-    //@Deprecated
     public void showPlaceHolderView(int flag){
         mPlaceHolderView.setVisibility(View.VISIBLE);
         mRefreshlayout.setVisibility(View.GONE);
-        mHolderPerformer.performPlaceHolderView(this, mPlaceHolderView, flag);
+        if(mHolderPerformer != null){
+            mHolderPerformer.performPlaceHolderView(this, mPlaceHolderView, flag);
+        }
     }
 
     private class LoadMoreScrollListenerImpl extends AbstractLoadMoreScrollListener{
